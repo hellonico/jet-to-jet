@@ -1,4 +1,4 @@
-(ns realtime.convertbw
+(ns util.convertbw
   (:import
     [javax.imageio ImageIO]
     [java.awt.color ColorSpace]

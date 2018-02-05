@@ -1,4 +1,4 @@
-(ns realtime.p3
+(ns realtime.p14
     (:import
       [com.hazelcast.jet Traverser Traversers]
       [com.hazelcast.jet.datamodel TimestampedEntry])
@@ -9,7 +9,7 @@
 
 (def counter (atom 0))
 (defn -init[ this context]
-  (println "hello p3")
+  (println "hello p14")
   (reset! counter 0))
 
 (defn -emit [this ta]
@@ -17,17 +17,15 @@
 
 (defn -complete [ this ]
   (let [
-    now (System/currentTimeMillis)
-    t (TimestampedEntry. now "hello" (str "its me[" @counter "]"))
-    ;t (TimestampedEntry. now "hello" 1)
-    ta (Traverser/over (into-array TimestampedEntry [t t]))
-    ]
+     now (System/currentTimeMillis)
+     t (TimestampedEntry. now "value" (rand 10))
+     ta (Traverser/over (into-array TimestampedEntry [t]))]
   (.emit this ta)
   (swap! counter inc)
-  (> @counter 120)))
+  (> @counter 100)))
 
 (defn -isCooperative[ this]
   false)
 
 (defn -close[this]
-  (println "> closing p3..."))
+  (println "> closing p14..."))

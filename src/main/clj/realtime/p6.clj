@@ -1,5 +1,5 @@
 (ns realtime.p6
-    (:require [realtime.convertbw :as bw])
+    (:require [util.convertbw :as bw])
     (:import
       [javax.imageio ImageIO]
       [SerializableBufferedImage]

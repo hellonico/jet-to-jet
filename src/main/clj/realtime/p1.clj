@@ -7,7 +7,7 @@
 
 (defn -tryProcess [this & object]
  (if (not (nil? object))
-  (println ">>" object))
+  (println ">> >>" object))
  true)
 
 (defn -close[this]

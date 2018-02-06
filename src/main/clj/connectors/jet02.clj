@@ -1,36 +1,37 @@
 (ns connectors.jet02
-"Streaming DAG with Read on a folder
-+
+ "Streaming DAG with Read on a folder plus
  write to files whie using peekInputP
- to steal input from another vertex
-")
-
-(import [com.hazelcast.jet.core DAG Edge])
-(import [com.hazelcast.jet.core.processor DiagnosticProcessors])
-(import [com.hazelcast.jet Jet])
-(import [com.hazelcast.jet.config JobConfig])
-
-(import [java.nio.charset StandardCharsets])
-(import [com.hazelcast.jet.core.processor SinkProcessors])
-(import [com.hazelcast.jet.core.processor SourceProcessors])
-
-(compile 'connectors.f01)
+ to steal input from another vertex"
+  (:import
+    [com.hazelcast.jet.core DAG Edge]
+    [com.hazelcast.jet.core.processor SourceProcessors DiagnosticProcessors SinkProcessors]
+    [com.hazelcast.jet Jet]
+    [com.hazelcast.jet.config JobConfig]
+    [java.nio.charset StandardCharsets]
+    [connectors f01]))
 
 (def dag (DAG.))
 
-(def source-folder "in")
+(def folder-stream
+  (SourceProcessors/streamFilesP
+      "in"
+      StandardCharsets/UTF_8
+      "*" ))
 
 (def reader
-    (.localParallelism
-    (.newVertex dag "reader"
-     (SourceProcessors/streamFilesP
-      source-folder
-      StandardCharsets/UTF_8
-      "*" )) 1))
+  (-> dag
+   (.newVertex "reader" folder-stream)
+   (.localParallelism 1)))
+
+(def write-p
+  (SinkProcessors/writeFileP
+  "out"
+  (new connectors.f01)
+  StandardCharsets/UTF_8
+  false))
 
 (def writer
-  (.newVertex dag "writer"
-    (SinkProcessors/writeFileP "out" (new connectors.f01) StandardCharsets/UTF_8 false )))
+  (-> dag (.newVertex "writer" write-p)))
 
 (def logger
   (.newVertex dag "logger"
@@ -49,10 +50,10 @@
   (doseq [j (.getJobs jet)] (.cancel j))
 
   ; important ! add a end of line
- (spit (str "in/more.txt") (str "logger and writer\n" ) :append true)
+  (spit (str "in/more.txt") (str "bonjour\n" ) :append true)
 
- ; delete all files in input folder
- (doseq [f (.listFiles (clojure.java.io/as-file "in"))]
+  ; delete all files in input folder
+  (doseq [f (.listFiles (clojure.java.io/as-file "in"))]
    (.delete f))
 
   )

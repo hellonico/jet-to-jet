@@ -20,4 +20,7 @@
     [org.boofcv/boofcv-core "0.28"]
     [org.boofcv/boofcv-WebcamCapture "0.28"]
 
-    [com.hazelcast.jet/hazelcast-jet "0.6-SNAPSHOT"]])
+    [com.hazelcast.jet/hazelcast-jet "0.6-SNAPSHOT"]
+
+    [chazel "0.1.15"]
+    ])

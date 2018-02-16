@@ -22,5 +22,5 @@
 
     [com.hazelcast.jet/hazelcast-jet "0.6-SNAPSHOT"]
 
-    [chazel "0.1.15"]
+    [hellonico/chazel "0.1.16"]
     ])

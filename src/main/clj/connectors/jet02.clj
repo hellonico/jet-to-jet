@@ -7,8 +7,7 @@
     [com.hazelcast.jet.core.processor SourceProcessors DiagnosticProcessors SinkProcessors]
     [com.hazelcast.jet Jet]
     [com.hazelcast.jet.config JobConfig]
-    [java.nio.charset StandardCharsets]
-    [connectors f01]))
+    [java.nio.charset StandardCharsets]))
 
 (def dag (DAG.))
 

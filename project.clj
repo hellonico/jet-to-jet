@@ -3,7 +3,7 @@
   (clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)
   ]
   :source-paths ["src/main/clj"]
-  ;:aot [realtime.p3]
+  :aot [pipes.touppercase]
   :java-source-paths ["src/main/java"]
   :resource-paths ["src/main/resources"]
   :repositories {
@@ -22,5 +22,5 @@
 
     [com.hazelcast.jet/hazelcast-jet "0.6-SNAPSHOT"]
 
-    [hellonico/chazel "0.1.16"]
+    [chazel "0.1.17-SNAPSHOT"]
     ])

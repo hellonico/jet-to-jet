@@ -2,6 +2,7 @@
   :injections [
   (clojure.lang.RT/loadLibrary org.opencv.core.Core/NATIVE_LIBRARY_NAME)
   ]
+  :main jet.client
   :source-paths ["src/main/clj"]
   :aot [pipes.touppercase]
   :java-source-paths ["src/main/java"]
@@ -23,4 +24,5 @@
     [com.hazelcast.jet/hazelcast-jet "0.6-SNAPSHOT"]
 
     [chazel "0.1.17-SNAPSHOT"]
+    [camel-snake-kebab "0.4.0"]
     ])

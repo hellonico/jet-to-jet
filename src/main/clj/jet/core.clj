@@ -1,5 +1,7 @@
 (ns jet.core
+    (:require [camel-snake-kebab.core :refer [->camelCase]])
     (:import
+      [com.hazelcast.jet Sources Sinks]
       [com.hazelcast.jet.config JobConfig]
       [com.hazelcast.jet Pipeline Jet]
       [com.hazelcast.jet.core DAG]
@@ -25,7 +27,7 @@
       (.setMapName event-config map-name)
       (-> jet (hz-config) (.addEventJournalConfig event-config)))))
 
-(defn hz-pipeline []
+(defn new-pipeline []
   (Pipeline/create))
 
 (defn job-config []
@@ -41,6 +43,21 @@
   ([ jet pipe-or-dag ]
   (.newJob jet pipe-or-dag (job-config))))
 
-
 (defn new-dag []
   (DAG.))
+
+(defn source [ type id ]
+  (let [m (.getDeclaredMethod Sources (name type) (into-array Class [String]))]
+      (.invoke m Sources (into-array String [id]))))
+
+(defn sink [ type id]
+  (let [m (.getDeclaredMethod Sinks (name type) (into-array Class [String]))]
+      (.invoke m Sinks (into-array String [id]))))
+
+(defmacro pipeline [ elements ]
+ `(let [ p# (jet.core/new-pipeline) ]
+   (-> p#
+   ~@(map #(concat (list '. (->camelCase (read-string (name (first %))))) (rest %) ) elements)
+   (.getPipeline)
+   (jet.core/new-job)
+   (.join))))

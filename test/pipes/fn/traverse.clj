@@ -3,8 +3,8 @@
   (:gen-class
     :implements [java.io.Serializable com.hazelcast.jet.function.DistributedFunction]))
 
-(defn -apply [this word]
-  (-> word
+(defn -apply [this sentence]
+  (-> sentence
     (.toLowerCase)
     (.split "\\W+")
     (Traversers/traverseArray)))

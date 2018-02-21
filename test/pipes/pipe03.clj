@@ -13,9 +13,13 @@
 ; load book into hazelcast list
 (def frankenstein
   (hz-list "frankenstein"))
-  
+
 (with-open [rdr (clojure.java.io/reader "src/main/resources/frankenstein.txt")]
      (.addAll frankenstein (into [] (line-seq rdr))))
+
+; how many lines ?
+(count frankenstein)
+; 7653
 
 (jet/pipeline [
  [:draw-from  (jet/source :list "frankenstein")]
